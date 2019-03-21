@@ -116,14 +116,14 @@ if __name__ == '__main__':
         break
     del test_dset
     del test_data
-    vutils.save_image(fixed_reals, join(sample_path, '{:06d}_real.jpg'.format(0)), nrow=8, normalize=True, range=(-1., 1.))
+    vutils.save_image(fixed_reals, join(sample_path, '{:07d}_real.jpg'.format(0)), nrow=8, padding=0, normalize=True, range=(-1., 1.))
     
     # Models
-    G = Generator(3)
+    G = Generator()
     G.apply(init_weights)
     G.to(device)
     
-    D = Discriminator(3)
+    D = Discriminator()
     D.apply(init_weights)
     D.to(device)
     
@@ -225,12 +225,12 @@ if __name__ == '__main__':
                 G.eval()
                 with torch.no_grad():
                     samples, masks = G(fixed_reals, fixed_target_labels)
-                    vutils.save_image(samples, join(sample_path, '{:06d}_fake.jpg'.format(cur_nimg)), nrow=8, normalize=True, range=(-1., 1.))
-                    vutils.save_image(masks.repeat(1, 3, 1, 1), join(sample_path, '{:06d}_mask.jpg'.format(cur_nimg)), nrow=8)
+                    vutils.save_image(samples, join(sample_path, '{:07d}_fake.jpg'.format(cur_nimg)), nrow=8, padding=0, normalize=True, range=(-1., 1.))
+                    vutils.save_image(masks.repeat(1, 3, 1, 1), join(sample_path, '{:07d}_mask.jpg'.format(cur_nimg)), nrow=8, padding=0)
             
             # Model checkpoints
             if cur_tick % args.save_ticks == 0 or done:
-                torch.save(G.state_dict(), join(checkpoint_path, '{:06}.G.pth'.format(cur_nimg)))
-                torch.save(D.state_dict(), join(checkpoint_path, '{:06}.D.pth'.format(cur_nimg)))
-                torch.save(G_opt.state_dict(), join(checkpoint_path, '{:06}.G_opt.pth'.format(cur_nimg)))
-                torch.save(D_opt.state_dict(), join(checkpoint_path, '{:06}.D_opt.pth'.format(cur_nimg)))
+                torch.save(G.state_dict(), join(checkpoint_path, '{:07}.G.pth'.format(cur_nimg)))
+                torch.save(D.state_dict(), join(checkpoint_path, '{:07}.D.pth'.format(cur_nimg)))
+                torch.save(G_opt.state_dict(), join(checkpoint_path, '{:07}.G_opt.pth'.format(cur_nimg)))
+                torch.save(D_opt.state_dict(), join(checkpoint_path, '{:07}.D_opt.pth'.format(cur_nimg)))

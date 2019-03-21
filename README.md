@@ -11,7 +11,7 @@ This repository contains the PyTorch implementation of the ECCV 2018 paper "Gene
 pip3 install -r requirements.txt
 ```
 
-The training procedure takes 5.5GB memory on a single GPU.
+The training procedure described in paper takes 5.5GB memory on a single GPU.
 
 ## Usage
 

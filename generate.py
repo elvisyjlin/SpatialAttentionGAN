@@ -64,17 +64,18 @@ if __name__ == '__main__':
     load_nimg = args.test_nimg
     if load_nimg is None:  # Use the lastest model
         load_nimg = max(int(path.split('.')[0]) for path in listdir(join(checkpoint_path)) if path.split('.')[0].isdigit())
-    print('Loading generator from nimg {:06d}'.format(load_nimg))
+    print('Loading generator from nimg {:07d}'.format(load_nimg))
     G.load_state_dict(torch.load(
         join(checkpoint_path, '{:d}.G.pth'.format(load_nimg)),
         map_location=lambda storage, loc: storage
     ))
     
     G.eval()
-    for batch_idx, (reals, labels) in enumerate(tqdm(test_data)):
-        reals, labels = reals.to(device), labels.to(device).type(reals.dtype)
-        target_labels = 1 - labels
-        with torch.no_grad():
+    with torch.no_grad():
+        for batch_idx, (reals, labels) in enumerate(tqdm(test_data)):
+            reals, labels = reals.to(device), labels.to(device).type(reals.dtype)
+            target_labels = 1 - labels
+            
             # Modify images
             samples, masks = G(reals, target_labels)
             
@@ -87,8 +88,9 @@ if __name__ == '__main__':
             for idx, image_out in enumerate(images_out):
                 vutils.save_image(
                     image_out,
-                    join(test_path, '{:06d}.jpg'.format(batch_idx*args.batch_size+idx+200000)),
+                    join(test_path, '{:07d}.jpg'.format(batch_idx*args.batch_size+idx+200000)),
                     nrow=3,
+                    padding=0,
                     normalize=True,
                     range=(-1.,1.)
                 )

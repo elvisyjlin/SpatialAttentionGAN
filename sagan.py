@@ -20,7 +20,7 @@ def get_nonlinear(name):
     if name == 'relu':
         return nn.ReLU(inplace=True)
     if name == 'lrelu':
-        return nn.LeakyReLU(inplace=True)
+        return nn.LeakyReLU(0.2, inplace=True)
     if name == 'sigmoid':
         return nn.Sigmoid()
     if name == 'tanh':
@@ -39,7 +39,7 @@ class ResBlk(nn.Module):
         )
     
     def forward(self, x):
-        return self.layers(x)
+        return self.layers(x) + x
 
 class _Generator(nn.Module):
     def __init__(self, input_channels, output_channels, last_nonlinear):
@@ -80,7 +80,7 @@ class _Generator(nn.Module):
     
     def forward(self, x, a=None):
         if a is not None:
-            assert len(a.size()) == 2 and x.size(0) == a.size(0)
+            assert a.dim() == 2 and x.size(0) == a.size(0)
             a = a.type(x.dtype)
             a = a.unsqueeze(2).unsqueeze(3).repeat(1, 1, x.size(2), x.size(3))
             x = torch.cat((x, a), dim=1)
@@ -90,10 +90,10 @@ class _Generator(nn.Module):
         return y
 
 class Generator(nn.Module):
-    def __init__(self, input_channels):
+    def __init__(self):
         super(Generator, self).__init__()
-        self.AMN = _Generator(input_channels + 1, input_channels, 'tanh')
-        self.SAN = _Generator(input_channels, 1, 'sigmoid')
+        self.AMN = _Generator(4, 3, 'tanh')
+        self.SAN = _Generator(3, 1, 'sigmoid')
     def forward(self, x, a):
         y = self.AMN(x, a)
         m = self.SAN(x)
@@ -101,10 +101,10 @@ class Generator(nn.Module):
         return y_, m
 
 class Discriminator(nn.Module):
-    def __init__(self, input_channels):
+    def __init__(self):
         super(Discriminator, self).__init__()
         self.conv = nn.Sequential(
-            nn.Conv2d(input_channels, 32, 4, 2, 1),
+            nn.Conv2d(3, 32, 4, 2, 1),
             get_nonlinear('lrelu'),
             nn.Conv2d(32, 64, 4, 2, 1),
             get_nonlinear('lrelu'),
