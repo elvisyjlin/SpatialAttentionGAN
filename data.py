@@ -37,7 +37,7 @@ class CelebA(data.Dataset):
             transforms.CenterCrop(170), 
             transforms.Resize(image_size), 
             transforms.ToTensor(), 
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
         ])
                                        
         self.length = len(self.images)

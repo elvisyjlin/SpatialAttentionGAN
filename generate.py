@@ -57,7 +57,7 @@ if __name__ == '__main__':
     test_data = data.DataLoader(test_dset, args.batch_size)
     
     # Model
-    G = Generator(3)
+    G = Generator()
     G.to(device)
     
     # Load from checkpoints
@@ -66,14 +66,14 @@ if __name__ == '__main__':
         load_nimg = max(int(path.split('.')[0]) for path in listdir(join(checkpoint_path)) if path.split('.')[0].isdigit())
     print('Loading generator from nimg {:07d}'.format(load_nimg))
     G.load_state_dict(torch.load(
-        join(checkpoint_path, '{:d}.G.pth'.format(load_nimg)),
+        join(checkpoint_path, '{:07d}.G.pth'.format(load_nimg)),
         map_location=lambda storage, loc: storage
     ))
     
     G.eval()
     with torch.no_grad():
         for batch_idx, (reals, labels) in enumerate(tqdm(test_data)):
-            reals, labels = reals.to(device), labels.to(device).type(reals.dtype)
+            reals, labels = reals.to(device), labels.to(device).type_as(reals)
             target_labels = 1 - labels
             
             # Modify images
@@ -88,7 +88,7 @@ if __name__ == '__main__':
             for idx, image_out in enumerate(images_out):
                 vutils.save_image(
                     image_out,
-                    join(test_path, '{:07d}.jpg'.format(batch_idx*args.batch_size+idx+200000)),
+                    join(test_path, '{:06d}.jpg'.format(batch_idx*args.batch_size+idx+200000)),
                     nrow=3,
                     padding=0,
                     normalize=True,
