@@ -23,7 +23,7 @@ The training procedure described in paper takes 5.5GB memory on a single GPU.
     * Put _Align&Cropped Images_ in `./data/celeba/*.jpg`
     * Put _Attributes Annotations_ in `./data/list_attr_celeba.txt`
 
-* Pretrained models (download from https://goo.gl/EMj4VL and decompress the zips to `./results`)
+* Pretrained models (download from http://bit.ly/sagan-results and decompress the zips to `./results`)
   ```
     results
     ├── celeba_128_eyeglasses
