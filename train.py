@@ -111,7 +111,7 @@ if __name__ == '__main__':
     test_data = data.DataLoader(test_dset, args.num_samples)
     for fixed_reals, fixed_labels in test_data:
         # Get the first batch of images from the testing set
-        fixed_reals, fixed_labels = fixed_reals.to(device), fixed_labels.to(device).type_as(fixed_reals)
+        fixed_reals, fixed_labels = fixed_reals.to(device), fixed_labels.type_as(fixed_reals).to(device)
         fixed_target_labels = 1 - fixed_labels
         break
     del test_dset
@@ -145,7 +145,7 @@ if __name__ == '__main__':
             trainable(D, True)
             
             reals, labels = next(train_data)
-            reals, labels = reals.to(device), labels.to(device).type_as(reals)
+            reals, labels = reals.to(device), labels.type_as(reals).to(device)
             target_labels = 1 - labels
             
             fakes, _ = G(reals, target_labels)
@@ -180,7 +180,7 @@ if __name__ == '__main__':
         trainable(D, False)
         
         reals, labels = next(train_data)
-        reals, labels = reals.to(device), labels.to(device).type_as(reals)
+        reals, labels = reals.to(device), labels.type_as(reals).to(device)
         target_labels = 1 - labels
         
         fakes, _ = G(reals, target_labels)
