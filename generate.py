@@ -73,7 +73,7 @@ if __name__ == '__main__':
     G.eval()
     with torch.no_grad():
         for batch_idx, (reals, labels) in enumerate(tqdm(test_data)):
-            reals, labels = reals.to(device), labels.to(device).type_as(reals)
+            reals, labels = reals.to(device), labels.type_as(reals).to(device)
             target_labels = 1 - labels
             
             # Modify images
