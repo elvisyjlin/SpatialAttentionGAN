@@ -116,7 +116,7 @@ if __name__ == '__main__':
         break
     del test_dset
     del test_data
-    vutils.save_image(fixed_reals, join(sample_path, '{:07d}_real.jpg'.format(0)), nrow=8, padding=0, normalize=True, range=(-1., 1.))
+    vutils.save_image(fixed_reals, join(sample_path, '{:07d}_real.jpg'.format(0)), nrow=8, padding=0, normalize=True, value_range=(-1., 1.))
     
     # Models
     G = Generator()
@@ -225,7 +225,7 @@ if __name__ == '__main__':
                 G.eval()
                 with torch.no_grad():
                     samples, masks = G(fixed_reals, fixed_target_labels)
-                    vutils.save_image(samples, join(sample_path, '{:07d}_fake.jpg'.format(cur_nimg)), nrow=8, padding=0, normalize=True, range=(-1., 1.))
+                    vutils.save_image(samples, join(sample_path, '{:07d}_fake.jpg'.format(cur_nimg)), nrow=8, padding=0, normalize=True, value_range=(-1., 1.))
                     vutils.save_image(masks.repeat(1, 3, 1, 1), join(sample_path, '{:07d}_mask.jpg'.format(cur_nimg)), nrow=8, padding=0)
             
             # Model checkpoints
