@@ -92,5 +92,5 @@ if __name__ == '__main__':
                     nrow=3,
                     padding=0,
                     normalize=True,
-                    value_range=(-1.,1.)
+                    range=(-1.,1.)
                 )
