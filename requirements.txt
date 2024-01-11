@@ -1,7 +1,7 @@
 numpy>=1.14.0
 scikit-image>=0.14.2
 tqdm
-torch==1.11.0
+torch==1.13.1
 torchvision==0.12.0
 torchsummary
 tensorboardX
